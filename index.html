@@ -662,7 +662,7 @@
         </div>
         <div class="voice-time">00:10</div>
       </div>
-      <audio class="voice-src" src="voice1.mp3"></audio>
+      <audio class="voice-src" src="./voice1.mp3"></audio>
     </div>
 
   </div>
@@ -1449,7 +1449,7 @@ function addNewVideoCardGT() {
 }
 
 function playThisVoice(el) {
-  // 停止所有语音 + 隐藏所有 GIF
+  // 停止所有正在播放的音频
   document.querySelectorAll('.voice-src').forEach(audio => {
     audio.pause();
     audio.currentTime = 0;
@@ -1462,8 +1462,13 @@ function playThisVoice(el) {
   const audio = item.querySelector('.voice-src');
   const gif = item.querySelector('.voice-wave-gif');
 
-  audio.play();
-  gif.style.display = 'inline-block'; // 改成 inline-block，跟文字对齐
+  // 修复 GitHub 播放问题
+  audio.load();
+  audio.play().catch(err => {
+    console.log("音频播放失败：", err);
+  });
+  
+  gif.style.display = 'inline-block';
 
   audio.onended = () => {
     gif.style.display = 'none';

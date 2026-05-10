@@ -277,7 +277,7 @@
   /* 英文 四级/六级/雅思 不透明实色高亮条 */
 .word-cet4 {
   display: inline-block;
-  background: #22c55e;
+  background: #00723c;
   padding: 0.1px 5px;
   border-radius: 4px;
   cursor: pointer;
@@ -297,7 +297,7 @@
 }
 .word-ielts {
   display: inline-block;
-  background: #91ae84;
+  background: #83ad28;
   padding: 2px 5px;
   border-radius: 4px;
   cursor: pointer;
@@ -329,7 +329,7 @@
     background: transparent;
     padding: 0;
     border-radius: 0;
-    color: #be8cff;
+    color: #83ad28;
     font-weight: 500;
   }
 
@@ -682,14 +682,12 @@
   gap: 16px;
   margin-bottom: 10px;
 }
-
 .voice-item {
   display: flex;
   align-items: center;
   gap: 10px;
   position: relative;
 }
-
 .voice-avatar {
   width: 46px;
   height: 46px;
@@ -697,64 +695,34 @@
   object-fit: cover;
   flex-shrink: 0;
 }
-
 .voice-bar {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  border-radius: 20px;
-  background: #00953d;
+  border-radius: 8px;
+  background: #00d559;
   gap: 10px;
   color: #000;
-  min-width: 80px;
-  max-width: 320px;
+  cursor: pointer;
 }
 
-.voice-item[data-dur*=":0"] .voice-bar,
-.voice-item[data-dur*=":1"] .voice-bar { width: 120px; }
-.voice-item[data-dur*=":2"] .voice-bar { width: 160px; }
-.voice-item[data-dur*=":3"] .voice-bar { width: 210px; }
-.voice-item[data-dur*=":4"] .voice-bar { width: 260px; }
-.voice-item[data-dur*=":5"] .voice-bar { width: 320px; }
+.voice-item[data-dur="00:00"] .voice-bar,
+.voice-item[data-dur="00:01"] .voice-bar,
+.voice-item[data-dur="00:02"] .voice-bar,
+.voice-item[data-dur="00:03"] .voice-bar,
+.voice-item[data-dur="00:04"] .voice-bar,
+.voice-item[data-dur="00:05"] .voice-bar,
+.voice-item[data-dur="00:06"] .voice-bar,
+.voice-item[data-dur="00:07"] .voice-bar,
+.voice-item[data-dur="00:08"] .voice-bar,
+.voice-item[data-dur="00:09"] .voice-bar { width: 120px; }
 
-.voice-text {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 15px;
-}
-.voice-wave-gif {
-  height: 22px;
-  width: auto;
-  display: none;
-}
-.voice-time {
-  font-size: 13px;
-  opacity: 0.8;
-}
-.voice-src {
-  display: none;
-}
-
-.voice-bar {
-  min-width: 80px;
-  max-width: 320px;
-}
-
-.voice-item[data-dur*=":0"] .voice-bar,
-.voice-item[data-dur*=":1"] .voice-bar { width: 120px; }
-.voice-item[data-dur*=":2"] .voice-bar { width: 160px; }
-.voice-item[data-dur*=":3"] .voice-bar { width: 210px; }
-.voice-item[data-dur*=":4"] .voice-bar { width: 260px; }
-.voice-item[data-dur*=":5"] .voice-bar { width: 320px; }
-
-.voice-avatar {
-  width: 46px;
-  height: 46px;
-  border-radius: 6px;
-  object-fit: cover;
-}
+.voice-item[data-dur^="00:1"] .voice-bar { width: 160px; }
+.voice-item[data-dur^="00:2"] .voice-bar { width: 210px; }
+.voice-item[data-dur^="00:3"] .voice-bar { width: 260px; }
+.voice-item[data-dur^="00:4"] .voice-bar { width: 300px; }
+.voice-item[data-dur^="00:5"] .voice-bar { width: 340px; }
 
 .voice-text {
   display: flex;
@@ -762,7 +730,6 @@
   gap: 6px;
   font-size: 15px;
 }
-
 .voice-wave-gif {
   height: 22px;
   width: auto;
@@ -909,7 +876,8 @@
   <div class="secondary-header">
     <div class="secondary-title">China GT</div>
     <div class="header-back-btn" onclick="showPage('mainPage')">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg>
+    </div>
   </div>
   <div class="search-box">
     <input class="search-input" placeholder="搜索视频">
@@ -1052,6 +1020,7 @@
 </div>
 
 <script>
+let lastPageBeforeVideo = "mainPage";
 const video = document.getElementById("videoPlayer");
 const subtitleList = document.getElementById("subtitleList");
 const subtitleContainer = document.getElementById("subtitleContainer");
@@ -1399,7 +1368,17 @@ function renderDramaVideos() {
 function renderGTVideos() {
   const list = JSON.parse(localStorage.getItem('gtVideos') || '[]');
   const container = document.getElementById('gtVideoList');
-  let html = '';
+  let html = `
+  <!-- 默认内置 GT 视频（你可以直接用这个） -->
+  <div class="video-item">
+    <div class="video-card" onclick="openVideo('gt_1.mp4')">
+      <div class="video-del-btn" onclick="deleteVideo(event,this)">×</div>
+      <img src="gt_1.jpg" class="video-card-img">
+      <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <input class="video-name" type="text" value="China GT 1">
+  </div>
+  `;
   list.forEach(item => {
     html += `
     <div class="video-item">
@@ -1526,6 +1505,9 @@ function jumpToSubtitle(index) {
   }
 }
 function openVideo(src, time = 0) {
+  // 记录进入视频前所在页面
+  lastPageBeforeVideo = document.querySelector('.page.active').id;
+
   showPage('videoPage');
   video.src = src;
   video.currentTime = time;
@@ -1590,7 +1572,8 @@ function stopVideoAndBack() {
   video.pause();
   video.currentTime = 0;
   document.getElementById('videoBox').classList.remove('playing');
-  showPage('dramaPage');
+  // 退回进入视频前的原页面
+  showPage(lastPageBeforeVideo);
 }
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => {
@@ -1699,29 +1682,28 @@ function playThisVoice(el) {
   const gif = item.querySelector('.voice-wave-gif');
   const time = item.querySelector('.voice-time');
 
+  // 如果当前正在播放 → 再次点击暂停
   if (!audio.paused) {
     audio.pause();
-    audio.currentTime = 0;
     gif.style.display = 'none';
     time.style.display = 'block';
     return;
   }
 
+  // 先暂停其他所有语音
   document.querySelectorAll('.voice-src').forEach(a => {
     a.pause();
     a.currentTime = 0;
   });
-  document.querySelectorAll('.voice-wave-gif').forEach(g => {
-    g.style.display = 'none';
-  });
-  document.querySelectorAll('.voice-time').forEach(t => {
-    t.style.display = 'block';
-  });
+  document.querySelectorAll('.voice-wave-gif').forEach(g => g.style.display = 'none');
+  document.querySelectorAll('.voice-time').forEach(t => t.style.display = 'block');
 
-  audio.play();
+  // 播放当前
+  audio.play().catch(err => console.log('播放异常:', err));
   gif.style.display = 'inline-block';
   time.style.display = 'none';
 
+  // 播放结束自动复原
   audio.onended = function () {
     gif.style.display = 'none';
     time.style.display = 'block';
@@ -1739,6 +1721,7 @@ function addVoiceBar() {
   document.getElementById('voiceTime').value = '';
   document.getElementById('voiceFile').value = '';
 }
+
 function renderVoiceList() {
   let list = JSON.parse(localStorage.getItem('voiceList') || '[]');
   let container = document.getElementById('voiceList');
@@ -1748,18 +1731,20 @@ function renderVoiceList() {
     <div class="voice-item" data-dur="${item.time}">
       <img class="voice-avatar" src="logo.jpg">
       <div class="voice-bar" onclick="playThisVoice(this)" style="position:relative;">
-        <span class="voice-del" onclick="event.stopPropagation();deleteVoice(this,'${item.file}')" style="display:none;position:absolute;right:-25px;top:50%;transform:translateY(-50%);background:rgba(150,150,150,0.4);color:#fff;width:18px;height:18px;border-radius:50%;font-size:12px;text-align:center;line-height:18px;">×</span>
+        <span class="voice-del" onclick="event.stopPropagation();deleteVoice(this,'${item.file}')" 
+        style="display:none;position:absolute;right:-25px;top:50%;transform:translateY(-50%);
+        background:rgba(150,150,150,0.4);color:#fff;width:18px;height:18px;
+        border-radius:50%;font-size:12px;text-align:center;line-height:18px;">×</span>
         <div class="voice-text">
-        <img class="voice-wave-gif" src="voice-wave.gif" alt="播放中">
+          <img class="voice-wave-gif" src="voice-wave.gif" alt="播放中">
         </div>
         <div class="voice-time">${item.time}</div>
       </div>
-      <audio class="voice-src" src="${item.file}"></audio>
+      <audio class="voice-src" src="${item.file}">
     </div>
     `;
   });
-    container.innerHTML = html;
- 
+  container.innerHTML = html;
 }
 
 function deleteVoice(el, file) {
@@ -1834,7 +1819,7 @@ function scrollToSearchWord() {
     const wordText = card.querySelector('span[style*="color:#00953d"]')?.innerText || '';
     if (wordText.toLowerCase() === target.toLowerCase()) {
       // 高亮边框+阴影 不破坏布局
-      card.style.border = '2px solid #22c55e';
+      card.style.border = '2px solid #00723c';
       card.style.boxShadow = '0 0 10px rgba(34,197,94,0.4)';
       // 滚动到屏幕中间
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });

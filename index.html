@@ -180,13 +180,13 @@
   .subtitle-switch-btn{
     position:absolute;
     right:12px;
-    bottom:12px;
-    padding:5px 12px;
+    top:12px;
+    padding:4px 9px;
     background:rgba(34,197,94,0.9);
     color:#fff;
     border:none;
     border-radius:6px;
-    font-size:13px;
+    font-size:10px;
     z-index:15;
     cursor:pointer;
   }
@@ -277,33 +277,46 @@
   /* 英文 四级/六级/雅思 不透明实色高亮条 */
 .word-cet4 {
   display: inline-block;
-  background: #00723c;
-  padding: 0.1px 5px;
+  background: transparent;
+  padding: 2px 5px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
   margin: 0 2px;
-  color: #ffffff;
+  color: #58f198;
+  /* 同色下划线 + 拉开距离 */
+  text-decoration: underline;
+  text-decoration-color: #58f198;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 .word-cet6 {
   display: inline-block;
-  background: #90ee90;
+  background: transparent;
   padding: 2px 5px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
   margin: 0 2px;
-  color: #111111;
+  color: #00b560;
+  text-decoration: underline;
+  text-decoration-color: #00b560;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
-.word-ielts {
+.word-vocabulary {
   display: inline-block;
-  background: #83ad28;
+  background: transparent;
   padding: 2px 5px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
   margin: 0 2px;
-  color: #ffffff;
+  color: #a8e428;
+  text-decoration: underline;
+  text-decoration-color: #a8e428;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
 
@@ -313,7 +326,7 @@
     background: transparent;
     padding: 0;
     border-radius: 0;
-    color: #00953d;
+    color: #58f198;
     font-weight: 500;
   }
   .zh-cet6 {
@@ -321,20 +334,20 @@
     background: transparent;
     padding: 0;
     border-radius: 0;
-    color: #00723c;
+    color: #00b560;
     font-weight: 500;
   }
-  .zh-ielts {
+  .zh-vocabulary {
     display: inline-block;
     background: transparent;
     padding: 0;
     border-radius: 0;
-    color: #83ad28;
+    color: #a8e428;
     font-weight: 500;
   }
 
   .word-popup {
-    position: fixed;
+    position: absolute;
     background: var(--bg-card);
     border: 1px solid #555;
     border-radius: 8px;
@@ -344,6 +357,7 @@
     min-width: 220px;
     display: none;
     color:var(--color-text);
+    /* 取消 fixed，改成绝对定位，跟着文档流走 */
   }
   .word-popup p {
     margin: 4px 0;
@@ -355,12 +369,12 @@
     font-weight: bold;
     font-size: 16px;
     margin-bottom: 6px;
-    color: #00953d;
+    color: #58f198;
   }
   .word-fav {
     margin-top: 6px;
     padding: 5px 8px;
-    background: #00953d;
+    background: #58f198;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -378,7 +392,7 @@
     box-sizing: border-box;
   }
   .tab{flex:1;display:grid;place-items:center;font-size:12px;cursor:pointer;color:var(--color-text-secondary);}
-  .tab.active{color:#00953d;}
+  .tab.active{color:#58f198;}
 
   .secondary-header{
     position:relative;padding:14px 16px;
@@ -777,6 +791,37 @@
   text-align: left;
   z-index: 6;
 }
+
+/* 首页全局搜索结果弹窗 */
+.search-result-pop {
+  position: fixed;
+  top: 58px;
+  left: 16px;
+  right: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  z-index: 1001;
+  padding: 10px 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  display: none;
+}
+.search-result-item {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(34,197,94,0.1);
+}
+.search-result-item:hover {
+  background: var(--bg-input-focus);
+}
+.search-result-tip {
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
 </style>
 </head>
 <body>
@@ -806,10 +851,10 @@
 
   <div class="search-box">
     <input id="mainSearchInput" class="search-input" type="text" 
-    placeholder="Yibo 酷盖"
+    placeholder="搜索单词/字幕/视频"
     autocomplete="off"
-    name="main_search_<?=time()?>"
-    onkeydown="if(event.key==='Enter') searchCetWords()">
+    onkeydown="if(event.key==='Enter') globalSearch()">
+    <div class="search-result-pop" id="searchResultPop"></div>
   </div>
 
   <div class="nav">
@@ -1060,12 +1105,12 @@ async function loadWordLibrary() {
   try {
     cet4Words = await fetch("cet4.json").then(r => r.json());
     cet6Words = await fetch("cet6.json").then(r => r.json());
-    let ielts = await fetch("ielts.json").then(r => r.json());
+    let vocabulary = await fetch("vocabulary.json").then(r => r.json());
 
     let allWords = {};
     for (let w in cet4Words) allWords[w] = { ...cet4Words[w], type: "cet4" };
     for (let w in cet6Words) allWords[w] = { ...cet6Words[w], type: "cet6" };
-    for (let w in ielts) allWords[w] = { ...ielts[w], type: "ielts" };
+    for (let w in vocabulary) allWords[w] = { ...vocabulary[w], type: "vocabulary" };
     wordLibrary = allWords;
 
     renderCet4List();
@@ -1246,7 +1291,7 @@ function renderWordBook() {
         <span style="color:#90ee90;">${item.phonetic || ''}</span>
         <span style="background:rgba(34,197,94,0.2);padding:2px 6px;border-radius:10px;font-size:12px;">${item.pos || ''}</span>
         <span style="color:var(--color-text);flex:1;">${item.meaning || ''}</span>
-        <button class="unfav-btn" onclick="removeCollectedWord('${item.word}')" style="margin:0;">取消收藏</button>
+        <button class="unfav-btn" onclick="removeCollectedWord('${item.word}')" style="margin:0;">取消</button>
       </div>
       ${senHtml}
     </div>`;
@@ -1262,24 +1307,21 @@ function renderPractice() {
     const [en, zh] = item.text.split('｜');
     return `
     <div class="practice-item" style="position:relative; padding-right:40px; line-height:1.7;">
-      
-      <!-- 英文：改这里 font-size 数字 -->
-      <div style="color:#00953d; font-weight:500; margin-bottom:4px; font-size:15px;">
-        ${idx + 1}. ${en}
+      <!-- 英文行 -->
+      <div style="color:#00953d; font-weight:500; font-size:15px;">
+        ${en || ''}
       </div>
-      
-      <!-- 中文：改这里 font-size 数字 -->
-      <div style="color:#ffffff; font-size:14px;">
+      <!-- 中文行 单独一行 白色字体 -->
+      <div style="color:#ffffff; font-size:14px; margin-top:6px;">
         ${zh || ''}
       </div>
       
+      <!-- 取消按钮换成空心五角星 替代X -->
       <div onclick="removeSentence(\`${item.text}\`)" 
-           style="position:absolute; right:0; top:10px;
-                  width:28px; height:28px; border-radius:50%;
-                  background:rgba(120,120,120,0.3); color:#ccc;
-                  display:grid; place-items:center; cursor:pointer;
-                  font-size:18px;">
-        ×
+           style="position:absolute; right:10px; top:12px;
+                  font-size:20px; color:#999;
+                  cursor:pointer;">
+        ☆
       </div>
     </div>
   `;
@@ -1335,23 +1377,7 @@ async function loadSubtitle(videoSrc){
 function renderDramaVideos() {
   const list = JSON.parse(localStorage.getItem('dramaVideos') || '[]');
   const container = document.getElementById('mindVideoList');
-  let html = `
-  <div class="video-item">
-    <div class="video-card" onclick="openVideo('exploring1_1.mp4')">
-      <div class="video-del-btn" onclick="deleteVideo(event,this)">×</div>
-      <img src="exploring1_1.jpg" class="video-card-img">
-      <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-    </div>
-    <input class="video-name" type="text" value="视频 1" onblur="saveDramaVideoName(this, 'exploring1_1.mp4')">
-  </div>
-  <div class="video-item">
-    <div class="video-card" onclick="openVideo('exploring1_2.mp4')">
-      <div class="video-del-btn" onclick="deleteVideo(event,this)">×</div>
-      <img src="exploring1_2.jpg" class="video-card-img">
-      <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-    </div>
-    <input class="video-name" type="text" value="视频 2" onblur="saveDramaVideoName(this, 'exploring1_2.mp4')">
-  </div>`;
+  let html = ``; // 空白，无内置视频
   list.forEach(item => {
     html += `
     <div class="video-item">
@@ -1365,19 +1391,11 @@ function renderDramaVideos() {
   });
   container.innerHTML = html;
 }
+
 function renderGTVideos() {
   const list = JSON.parse(localStorage.getItem('gtVideos') || '[]');
   const container = document.getElementById('gtVideoList');
-  let html = `
-  <div class="video-item">
-    <div class="video-card" onclick="openVideo('gt_1.mp4')">
-      <div class="video-del-btn" onclick="deleteVideo(event,this)">×</div>
-      <img src="gt_1.jpg" class="video-card-img">
-      <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-    </div>
-    <input class="video-name" type="text" value="China GT 1" onblur="saveGTVideoName(this, 'gt_1.mp4')">
-  </div>
-  `;
+  let html = ``; // 空白，无内置视频
   list.forEach(item => {
     html += `
     <div class="video-item">
@@ -1448,9 +1466,9 @@ function renderSubtitles() {
         enClass = 'word-cet6';
         zhClass = 'zh-cet6';
       }
-      if(info.type === 'ielts') {
-        enClass = 'word-ielts';
-        zhClass = 'zh-ielts';
+      if(info.type === 'vocabulary') {
+        enClass = 'word-vocabulary';
+        zhClass = 'zh-vocabulary';
       }
 
       const regEn = new RegExp(`\\b${word}\\b`, "gi");
@@ -1516,8 +1534,13 @@ function openVideo(src, time = 0) {
   video.src = src;
   video.currentTime = time;
   video.play().catch(() => { });
-  resetSubtitleState();
-  loadSubtitle(src);
+
+  // 先加载字幕，加载完成后自动跳转到对应句子
+  loadSubtitle(src).then(() => {
+    if (time > 0 && subtitles.length > 0) {
+      jumpToTimeSubtitle(time);
+    }
+  });
 }
 function resetSubtitleState() {
   currentSubIndex = -1;
@@ -1528,17 +1551,24 @@ function resetSubtitleState() {
 }
 
 document.addEventListener("click", e => {
-  if (e.target.classList.contains("word-cet4") || e.target.classList.contains("word-cet6") || e.target.classList.contains("word-ielts")) {
+  if (e.target.classList.contains("word-cet4") || e.target.classList.contains("word-cet6") || e.target.classList.contains("word-vocabulary")) {
     const word = e.target.dataset.word;
     const info = wordLibrary[word];
     if (!info) return;
-    wordPopup.style.display = "block";
-    const rect = e.target.getBoundingClientRect();
-    let left = Math.max(10, rect.left);
-    let top = rect.bottom + 10;
-    if (left + 240 > window.innerWidth) left = window.innerWidth - 250;
-    wordPopup.style.left = left + "px";
-    wordPopup.style.top = top + "px";
+        wordPopup.style.display = "block";
+    // 关键：挂靠在当前单词元素后面
+    e.target.appendChild(wordPopup);
+    // 重置位置，紧贴单词正下方
+    wordPopup.style.left = "0px";
+    wordPopup.style.top = "8px";
+    // 防止超出屏幕右侧自动靠左
+    setTimeout(() => {
+      const popRect = wordPopup.getBoundingClientRect();
+      if(popRect.right > window.innerWidth){
+        let offset = popRect.right - window.innerWidth + 10;
+        wordPopup.style.left = -offset + "px";
+      }
+    },0);
     wordPopup.innerHTML = `
       <p class="word-text">${word}</p>
       <p>释义：${info.meaning}</p>
@@ -1764,49 +1794,121 @@ const adminToggleBtn = document.getElementById('adminToggleBtn');
 const adminVoiceForm = document.getElementById('adminVoiceForm');
 let adminMode = false;
 // 只搜索四六级单词 纯净版 不破坏布局
-function searchCetWords() {
+// 全局聚合搜索：单词 + 字幕 + 视频
+function globalSearch() {
   const kw = document.getElementById('mainSearchInput').value.trim().toLowerCase();
+  const pop = document.getElementById('searchResultPop');
+  pop.innerHTML = '';
+
   if (!kw) {
-    alert('请输入要搜索的四六级单词');
+    pop.style.display = 'none';
     return;
   }
 
+  let resultHtml = '';
+  let hasResult = false;
+
+  // 1. 搜四六级单词
   let cet4Match = [];
   for (let w in cet4Words) {
-    const word = w.toLowerCase();
-    const mean = cet4Words[w].meaning.toLowerCase();
-    if (word.includes(kw) || mean.includes(kw)) {
+    if (w.toLowerCase().includes(kw) || cet4Words[w].meaning.toLowerCase().includes(kw)) {
       cet4Match.push(w);
     }
   }
-
   let cet6Match = [];
   for (let w in cet6Words) {
-    const word = w.toLowerCase();
-    const mean = cet6Words[w].meaning.toLowerCase();
-    if (word.includes(kw) || mean.includes(kw)) {
+    if (w.toLowerCase().includes(kw) || cet6Words[w].meaning.toLowerCase().includes(kw)) {
       cet6Match.push(w);
     }
   }
 
-  if (cet4Match.length === 0 && cet6Match.length === 0) {
-    alert('未找到该四六级单词');
+  if (cet4Match.length) {
+    resultHtml += '<div class="search-result-tip">📚 四级单词</div>';
+    cet4Match.forEach(w => {
+      hasResult = true;
+      resultHtml += `<div class="search-result-item" data-type="cet4" data-val="${w}">${w} — ${cet4Words[w].meaning}</div>`;
+    });
+  }
+  if (cet6Match.length) {
+    resultHtml += '<div class="search-result-tip">📚 六级单词</div>';
+    cet6Match.forEach(w => {
+      hasResult = true;
+      resultHtml += `<div class="search-result-item" data-type="cet6" data-val="${w}">${w} — ${cet6Words[w].meaning}</div>`;
+    });
+  }
+
+  // 2. 搜所有字幕句子
+  const subCache = JSON.parse(localStorage.getItem('allSubtitlesCache') || '[]');
+  const subMatch = subCache.filter(item => 
+    item.en.toLowerCase().includes(kw) || item.zh.includes(kw)
+  );
+  if (subMatch.length) {
+    resultHtml += '<div class="search-result-tip">🎬 字幕句子</div>';
+    subMatch.forEach(item => {
+      hasResult = true;
+      let text = item.en.length > 28 ? item.en.slice(0,28)+'...' : item.en;
+      resultHtml += `<div class="search-result-item" data-type="sub" data-src="${item.videoSrc}" data-time="${item.time}">${text}</div>`;
+    });
+  }
+
+  // 3. 搜视频标题
+  const dramaVideos = JSON.parse(localStorage.getItem('dramaVideos') || '[]');
+  const gtVideos = JSON.parse(localStorage.getItem('gtVideos') || '[]');
+  const allVideos = [...dramaVideos, ...gtVideos];
+  const videoMatch = allVideos.filter(v => v.title.toLowerCase().includes(kw));
+  if (videoMatch.length) {
+    resultHtml += '<div class="search-result-tip">📺 视频</div>';
+    videoMatch.forEach(v => {
+      hasResult = true;
+      resultHtml += `<div class="search-result-item" data-type="video" data-src="${v.vid}">${v.title}</div>`;
+    });
+  }
+
+  if (!hasResult) {
+    resultHtml += '<div class="search-result-tip">暂无匹配结果</div>';
+  }
+
+  pop.innerHTML = resultHtml;
+  pop.style.display = 'block';
+}
+
+// 点击搜索结果跳转逻辑
+document.addEventListener('click', function(e){
+  const popItem = e.target.closest('.search-result-item');
+  const popBox = document.getElementById('searchResultPop');
+  const input = document.getElementById('mainSearchInput');
+
+  // 点击结果项
+  if(popItem){
+    const type = popItem.dataset.type;
+    const val = popItem.dataset.val;
+    const src = popItem.dataset.src;
+    const time = parseFloat(popItem.dataset.time || 0);
+
+    if(type === 'cet4'){
+      window.searchTargetWord = val;
+      showPage('cet4Page');
+      setTimeout(scrollToSearchWord,150);
+    }else if(type === 'cet6'){
+      window.searchTargetWord = val;
+      showPage('cet6Page');
+      setTimeout(scrollToSearchWord,150);
+    }else if(type === 'sub'){
+      openVideo(src, time);
+    }else if(type === 'video'){
+      openVideo(src, 0);
+    }
+
+    popBox.style.display = 'none';
+    input.value = '';
     return;
   }
 
-  // 存全局要定位的单词
-  window.searchTargetWord = cet4Match.length ? cet4Match[0] : cet6Match[0];
-  const pageId = cet4Match.length ? 'cet4Page' : 'cet6Page';
-
-  // 跳转页面后滚动到对应单词
-  showPage(pageId);
-  setTimeout(() => {
-    scrollToSearchWord();
-  }, 150);
-
-  // 搜索完成后清空输入框，自动恢复 placeholder
-  document.getElementById('mainSearchInput').value = '';
-}
+  // 点击空白关闭弹窗
+  if(!popBox.contains(e.target) && e.target !== input){
+    popBox.style.display = 'none';
+  }
+});
 
 // 只滚动 + 加边框高亮，不改动原有HTML，绝不乱码
 function scrollToSearchWord() {
@@ -1929,6 +2031,8 @@ document.getElementById('avatarInput').addEventListener('change', e => {
   };
   r.readAsDataURL(f);
 });
+
+
 </script>
 </body>
 </html>

@@ -1342,7 +1342,7 @@ function renderDramaVideos() {
       <img src="exploring1_1.jpg" class="video-card-img">
       <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
     </div>
-    <input class="video-name" type="text" value="视频 1">
+    <input class="video-name" type="text" value="视频 1" onblur="saveDramaVideoName(this, 'exploring1_1.mp4')">
   </div>
   <div class="video-item">
     <div class="video-card" onclick="openVideo('exploring1_2.mp4')">
@@ -1350,7 +1350,7 @@ function renderDramaVideos() {
       <img src="exploring1_2.jpg" class="video-card-img">
       <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
     </div>
-    <input class="video-name" type="text" value="视频 2">
+    <input class="video-name" type="text" value="视频 2" onblur="saveDramaVideoName(this, 'exploring1_2.mp4')">
   </div>`;
   list.forEach(item => {
     html += `
@@ -1360,7 +1360,7 @@ function renderDramaVideos() {
         <img src="${item.img}" class="video-card-img">
         <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       </div>
-      <input class="video-name" type="text" value="${item.title}">
+      <input class="video-name" type="text" value="${item.title}" onblur="saveDramaVideoName(this, '${item.vid}')">
     </div>`;
   });
   container.innerHTML = html;
@@ -1369,14 +1369,13 @@ function renderGTVideos() {
   const list = JSON.parse(localStorage.getItem('gtVideos') || '[]');
   const container = document.getElementById('gtVideoList');
   let html = `
-  <!-- 默认内置 GT 视频（你可以直接用这个） -->
   <div class="video-item">
     <div class="video-card" onclick="openVideo('gt_1.mp4')">
       <div class="video-del-btn" onclick="deleteVideo(event,this)">×</div>
       <img src="gt_1.jpg" class="video-card-img">
       <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
     </div>
-    <input class="video-name" type="text" value="China GT 1">
+    <input class="video-name" type="text" value="China GT 1" onblur="saveGTVideoName(this, 'gt_1.mp4')">
   </div>
   `;
   list.forEach(item => {
@@ -1387,7 +1386,7 @@ function renderGTVideos() {
         <img src="${item.img}" class="video-card-img">
         <div class="video-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       </div>
-      <input class="video-name" type="text" value="${item.title}">
+      <input class="video-name" type="text" value="${item.title}" onblur="saveGTVideoName(this, '${item.vid}')">
     </div>`;
   });
   container.innerHTML = html;
@@ -1422,6 +1421,11 @@ window.onload = async function () {
     }, 600);
     e.target.addEventListener('touchend', () => clearTimeout(timer), { once: true });
   });
+
+  // ========== 新增：加载本地保存的头像、昵称、签名 ==========
+  loadUserProfile();
+  // 绑定昵称、签名输入框自动保存
+  bindProfileInputSave();
 };
 
 function renderSubtitles() {
@@ -1849,6 +1853,82 @@ adminToggleBtn.onclick = function(){
     btn.style.display=adminMode?'grid':'none';
   });
 };
+
+// 保存探索心境视频名称
+function saveDramaVideoName(inputEl, videoSrc) {
+  let newTitle = inputEl.value.trim();
+  let list = JSON.parse(localStorage.getItem('dramaVideos') || '[]');
+  list = list.map(item => {
+    if (item.vid === videoSrc) {
+      item.title = newTitle;
+    }
+    return item;
+  });
+  localStorage.setItem('dramaVideos', JSON.stringify(list));
+}
+
+// 保存China GT视频名称
+function saveGTVideoName(inputEl, videoSrc) {
+  let newTitle = inputEl.value.trim();
+  let list = JSON.parse(localStorage.getItem('gtVideos') || '[]');
+  list = list.map(item => {
+    if (item.vid === videoSrc) {
+      item.title = newTitle;
+    }
+    return item;
+  });
+  localStorage.setItem('gtVideos', JSON.stringify(list));
+}
+
+// 加载用户资料：头像base64、昵称、个性签名
+function loadUserProfile() {
+  // 头像
+  const saveAvatar = localStorage.getItem('iboAvatar');
+  if (saveAvatar) {
+    document.getElementById('avatarPreview').src = saveAvatar;
+  }
+  // 昵称
+  const saveName = localStorage.getItem('iboName');
+  if (saveName) {
+    document.getElementById('iboName').value = saveName;
+  }
+  // 个性签名
+  const saveSign = localStorage.getItem('iboSign');
+  if (saveSign) {
+    document.getElementById('iboSign').value = saveSign;
+  }
+}
+
+// 昵称、个性签名 输入时自动保存
+function bindProfileInputSave() {
+  const nameInput = document.getElementById('iboName');
+  const signInput = document.getElementById('iboSign');
+
+  // 昵称失去焦点自动存
+  nameInput.addEventListener('blur', function(){
+    localStorage.setItem('iboName', this.value.trim());
+  });
+
+  // 个性签名失去焦点自动存
+  signInput.addEventListener('blur', function(){
+    localStorage.setItem('iboSign', this.value.trim());
+  });
+}
+
+// 头像上传并保存base64到本地
+document.getElementById('avatarInput').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = function (e) {
+    const base64Img = e.target.result;
+    // 预览赋值
+    document.getElementById('avatarPreview').src = base64Img;
+    // 永久存入本地
+    localStorage.setItem('iboAvatar', base64Img);
+  };
+  r.readAsDataURL(f);
+});
 </script>
 </body>
 </html>

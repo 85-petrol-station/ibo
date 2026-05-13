@@ -822,6 +822,30 @@
   font-size: 12px;
   color: var(--color-text-secondary);
 }
+
+/* 音频进度条圆点 → 绿色 */
+#bbcAudioProgress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 10%;
+  background: #00d559;
+  cursor: pointer;
+}
+#bbcAudioProgress::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00d559;
+  border: none;
+}
+
+/* 播放键去掉绿色背景 */
+#bbcPlayBtn {
+  background: transparent !important;
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+}
 </style>
 </head>
 <body>
@@ -1055,13 +1079,63 @@
     <div class="header-back-btn" onclick="showPage('mainPage')">
       <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
   </div>
-  <div style="padding:20px;color:var(--color-text);text-align:center">即将上线</div>
+
+  <!-- 管理表单（新增音频地址输入） -->
+  <div id="bbcNewsForm" style="display:none; padding:12px 16px;">
+    <input type="text" id="bbcArticleName" placeholder="文章名称" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:var(--bg-input);color:var(--color-text);border:1px solid rgba(34,197,94,0.3);">
+    <input type="text" id="bbcUpdateTime" placeholder="日期 例：2025-12-25" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:var(--bg-input);color:var(--color-text);border:1px solid rgba(34,197,94,0.3);">
+    <input type="text" id="bbcImageName" placeholder="缩略图：thumbnail_1.jpg" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:var(--bg-input);color:var(--color-text);border:1px solid rgba(34,197,94,0.3);">
+    <input type="text" id="bbcBannerImage" placeholder="详情Banner：news_1.jpg" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:var(--bg-input);color:var(--color-text);border:1px solid rgba(34,197,94,0.3);">
+    <input type="text" id="bbcAudioSrc" placeholder="音频：audio_1.mp3" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:var(--bg-input);color:var(--color-text);border:1px solid rgba(34,197,94,0.3);">
+    <textarea id="bbcContent" placeholder="文章内容" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:var(--bg-input);color:var(--color-text);border:1px solid rgba(34,197,94,0.3);min-height:80px;resize:vertical;"></textarea>
+    <button onclick="addBbcNews()" style="width:100%;background:#00953d;color:#fff;padding:9px;border-radius:8px;border:none;">添加 NEWS</button>
+  </div>
+
+  <!-- 列表页 -->
+  <div id="bbcNewsList" style="padding:10px 16px; display:flex; flex-direction:column; gap:12px;"></div>
 </div>
 
-<div class="tabbar">
-  <div class="tab active" onclick="showPage('mainPage')">首页</div>
-  <div class="tab" onclick="showPage('oilPage')">加油站</div>
-  <div class="tab" onclick="showPage('iboPage')">ibo</div>
+<!-- 三级详情页（参考你给的版式） -->
+<div id="bbcDetailPage" class="page">
+  <div class="secondary-header">
+    <div class="secondary-title">NEWS 详情</div>
+    <div class="header-back-btn" onclick="stopBbcAudioAndBack()">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
+  </div>
+
+  <!-- 1. 顶部Banner大图 -->
+  <div style="padding:0 16px 10px;">
+    <div style="width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden;">
+      <img id="bbcDetailBanner" src="" alt="news banner" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+  </div>
+
+  <!-- 2. 中间文章内容（可滚动，底部给音频留空间） -->
+  <div style="padding:10px 16px 120px; line-height:1.8; font-size:16px; color:var(--color-text);">
+    <div id="bbcDetailTitle" style="font-size:22px; font-weight:bold; color:#00953d; margin-bottom:8px;"></div>
+    <div id="bbcDetailMeta" style="font-size:13px; color:var(--color-text-secondary); margin-bottom:16px; display:flex; gap:12px;">
+      <span id="bbcDetailTime"></span>
+    </div>
+    <hr style="border:0; border-top:1px solid rgba(34,197,94,0.2); margin-bottom:16px;">
+    <div id="bbcDetailContent" style="white-space:pre-wrap;"></div>
+  </div>
+
+  <!-- 3. 底部音频播放器（固定到底部） -->
+  <div style="position:fixed; bottom:0; left:0; right:0; background:var(--bg-tabbar); border-top:1px solid rgba(34,197,94,0.3); padding:12px 16px 16px; padding-bottom: env(safe-area-inset-bottom); z-index:99;">
+    <audio id="bbcAudioPlayer" preload="metadata"></audio>
+
+    <div style="display:flex; align-items:center; gap:12px; margin-top:8px;">
+      <span id="bbcAudioCurrent" style="font-size:14px; color:var(--color-text-secondary); width:40px;">00:00</span>
+      <input type="range" id="bbcAudioProgress" min="0" max="100" value="0" style="flex:1; height:1px; border-radius:2px; background:var(--border-color); -webkit-appearance:none; outline:none;">
+      <span id="bbcAudioDuration" style="font-size:14px; color:var(--color-text-secondary); width:40px;">00:00</span>
+    </div>
+
+    <div style="display:flex; justify-content:space-around; align-items:center; margin-top:10px;">
+      <button onclick="bbcSkip(-5)" style="width:34px; height:34px; border-radius:50%; background:transparent; color:var(--color-text); border:0.5px solid var(--color-text-secondary); font-size:10px;">-5s</button>
+      <button id="bbcPlayBtn" onclick="toggleBbcAudio()" style="width:50px; height:50px; border-radius:50%; background:#00953d; color:#fff; border:none; font-size:24px; display:grid; place-items:center;">▶</button>
+      <button onclick="bbcSkip(5)" style="width:34px; height:34px; border-radius:50%; background:transparent; color:var(--color-text); border:0.5px solid var(--color-text-secondary); font: size 10px;px;">+5s</button>
+</div>
+  </div>
 </div>
 
 <script>
@@ -1411,9 +1485,7 @@ function renderGTVideos() {
 }
 
 window.onload = async function () {
-  // 初始化主题
   initTheme();
-  
   await loadWordLibrary();
   renderWordBook();
   renderPractice();
@@ -1432,6 +1504,9 @@ window.onload = async function () {
   renderVoiceList();
   renderDramaVideos();
   renderGTVideos();
+
+  // ====== 加这一行 ======
+  renderBbcNews();
 
   document.addEventListener('touchstart', function(e) {
     let timer = setTimeout(() => {
@@ -1950,10 +2025,12 @@ adminToggleBtn.onclick = function(){
     gtAddForm.style.display = 'none';
     this.innerText = '管理';
   }
-  // 统一控制所有删除按钮显示/隐藏
   document.querySelectorAll('.voice-del, .video-del-btn').forEach(btn=>{
     btn.style.display=adminMode?'grid':'none';
   });
+  
+  // ====== 加这一行 ======
+  syncBbcAdminDisplay();
 };
 
 // 保存探索心境视频名称
@@ -2032,6 +2109,178 @@ document.getElementById('avatarInput').addEventListener('change', e => {
   r.readAsDataURL(f);
 });
 
+// =============== Yibo News 模块（带音频播放器） ===============
+let currentNewsList = [];
+let bbcAudio = document.getElementById('bbcAudioPlayer');
+let bbcSpeed = 1.0;
+
+// 渲染一级列表页
+function renderBbcNews() {
+  const list = JSON.parse(localStorage.getItem('bbcNewsList') || '[]');
+  currentNewsList = list;
+  const container = document.getElementById('bbcNewsList');
+  let html = '';
+  list.forEach((item, index) => {
+    html += `
+    <div onclick="openBbcDetail(${index})" style="background:var(--bg-card); border-radius:14px; padding:12px 14px;
+                display:flex; align-items:center; justify-content:space-between;
+                box-shadow:0 2px 8px rgba(0,0,0,0.2); position:relative; cursor:pointer;">
+      <div style="flex:1; padding-right:10px;">
+        <div style="font-size:16px; font-weight:bold; color:#00953d; margin-bottom:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.name}</div>
+        <div style="font-size:12px; color:var(--color-text-secondary);">${item.time}</div>
+      </div>
+      <div style="width:70px; height:70px; border-radius:10px; overflow:hidden; background:#000;flex-shrink:0;">
+        <img src="${item.img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='news_1.jpg'">
+      </div>
+      <div class="bbc-del-btn" onclick="event.stopPropagation();deleteBbcNews(${index})"
+           style="position:absolute; top:6px; right:6px; width:20px; height:20px;
+                  border-radius:50%; background:rgba(120,120,120,0.5); color:#fff;
+                  display:grid; place-items:center; font-size:12px; cursor:pointer;
+                  display:none;">×</div>
+    </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+// 添加新文章（新增音频地址）
+function addBbcNews() {
+  const name = document.getElementById('bbcArticleName').value.trim();
+  const time = document.getElementById('bbcUpdateTime').value.trim();
+  const img = document.getElementById('bbcImageName').value.trim();
+  const banner = document.getElementById('bbcBannerImage').value.trim();
+  const audio = document.getElementById('bbcAudioSrc').value.trim();
+  const content = document.getElementById('bbcContent').value.trim();
+  
+  if (!name || !time || !img || !banner || !audio || !content) {
+    alert('请填写完整信息（含音频文件地址）');
+    return;
+  }
+  
+  const list = JSON.parse(localStorage.getItem('bbcNewsList') || '[]');
+  list.unshift({ name, time, img, banner, audio, content });
+  localStorage.setItem('bbcNewsList', JSON.stringify(list));
+  renderBbcNews();
+  
+  // 清空表单
+  document.getElementById('bbcArticleName').value = '';
+  document.getElementById('bbcUpdateTime').value = '';
+  document.getElementById('bbcImageName').value = '';
+  document.getElementById('bbcBannerImage').value = '';
+  document.getElementById('bbcAudioSrc').value = '';
+  document.getElementById('bbcContent').value = '';
+}
+
+// 删除文章
+function deleteBbcNews(index) {
+  if (!confirm('确定删除这条 NEWS？')) return;
+  const list = JSON.parse(localStorage.getItem('bbcNewsList') || '[]');
+  list.splice(index, 1);
+  localStorage.setItem('bbcNewsList', JSON.stringify(list));
+  renderBbcNews();
+}
+
+// 打开三级详情页
+function openBbcDetail(index) {
+  const item = currentNewsList[index];
+  
+  // 1. 加载Banner图
+  const bannerImg = document.getElementById('bbcDetailBanner');
+  bannerImg.src = '';
+  bannerImg.src = item.banner;
+  bannerImg.onerror = function() { this.src = 'news_1.jpg'; };
+  
+  // 2. 加载文章内容
+  document.getElementById('bbcDetailTitle').innerText = item.name;
+  document.getElementById('bbcDetailTime').innerText = item.time;
+  document.getElementById('bbcDetailContent').innerText = item.content;
+  
+  // 3. 加载音频
+  bbcAudio.src = item.audio;
+  bbcAudio.load();
+  
+  // 重置播放器状态
+  document.getElementById('bbcPlayBtn').innerText = '▶';
+  document.getElementById('bbcAudioProgress').value = 0;
+  document.getElementById('bbcAudioCurrent').innerText = '00:00';
+  document.getElementById('bbcAudioDuration').innerText = '00:00';
+  
+  showPage('bbcDetailPage');
+}
+
+// 音频播放/暂停控制
+function toggleBbcAudio() {
+  if (bbcAudio.paused) {
+    bbcAudio.play().catch(() => alert('音频加载失败，请检查文件地址'));
+    document.getElementById('bbcPlayBtn').innerText = '❚❚';
+  } else {
+    bbcAudio.pause();
+    document.getElementById('bbcPlayBtn').innerText = '▶';
+  }
+}
+
+// 倍速切换
+function toggleBbcSpeed() {
+  const speeds = [1.0, 1.25, 1.5, 0.75];
+  const idx = speeds.indexOf(bbcSpeed);
+  bbcSpeed = speeds[(idx + 1) % speeds.length];
+  bbcAudio.playbackRate = bbcSpeed;
+  document.getElementById('bbcSpeedBtn').innerText = bbcSpeed + 'x';
+}
+
+// 快进/快退
+function bbcSkip(seconds) {
+  bbcAudio.currentTime += seconds;
+}
+
+// 格式化时间
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+// 音频进度条同步
+bbcAudio.addEventListener('loadedmetadata', () => {
+  document.getElementById('bbcAudioDuration').innerText = formatTime(bbcAudio.duration);
+});
+bbcAudio.addEventListener('timeupdate', () => {
+  const percent = (bbcAudio.currentTime / bbcAudio.duration) * 100;
+  document.getElementById('bbcAudioProgress').value = percent;
+  document.getElementById('bbcAudioCurrent').innerText = formatTime(bbcAudio.currentTime);
+});
+bbcAudio.addEventListener('ended', () => {
+  document.getElementById('bbcPlayBtn').innerText = '▶';
+  bbcAudio.currentTime = 0;
+  document.getElementById('bbcAudioProgress').value = 0;
+});
+
+// 进度条拖拽控制
+document.getElementById('bbcAudioProgress').addEventListener('input', function() {
+  const time = (this.value / 100) * bbcAudio.duration;
+  bbcAudio.currentTime = time;
+});
+
+// 返回时停止音频
+function stopBbcAudioAndBack() {
+  bbcAudio.pause();
+  bbcAudio.currentTime = 0;
+  document.getElementById('bbcPlayBtn').innerText = '▶';
+  showPage('bbcPage');
+}
+
+// 管理模式同步
+function syncBbcAdminDisplay() {
+  const bbcForm = document.getElementById('bbcNewsForm');
+  const bbcDels = document.querySelectorAll('.bbc-del-btn');
+  if (adminMode) {
+    bbcForm.style.display = 'block';
+    bbcDels.forEach(el => el.style.display = 'grid');
+  } else {
+    bbcForm.style.display = 'none';
+    bbcDels.forEach(el => el.style.display = 'none');
+  }
+}
 
 </script>
 </body>

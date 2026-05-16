@@ -6,7 +6,6 @@
 <title>ibo摩托英文学习站</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
-
   :root {
     --bg-body: #121212;
     --bg-mask: rgba(18,18,18,0.75);
@@ -600,6 +599,17 @@
     margin: 0 16px 12px;
     border: 1px solid rgba(34,197,94,0.3);
   }
+  .word-item {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #4cd964;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .word-item:active,
+  .word-item:focus {
+      color: inherit;
+  }
   .wb-word {
     font-size: 19px;
     font-weight: bold;
@@ -846,6 +856,246 @@
   color: var(--color-text);
   border: 1px solid var(--color-text);
 }
+
+/* 学习计划 */
+.plan-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(34,197,94,0.2);
+}
+.plan-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+.plan-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(80,80,80,0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.plan-progress {
+  height: 100%;
+  width: 0%;
+  background: #00953d;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.plan-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+}
+.plan-start-btn {
+  width: 100%;
+  padding: 10px;
+  background: #00953d;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* 功能Banner */
+.func-banner {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(34,197,94,0.15);
+  transition: all 0.2s;
+}
+.func-banner:active {
+  transform: scale(0.98);
+  background: var(--bg-card-light);
+}
+.func-icon {
+  font-size: 26px;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items:center;
+  background: rgba(34,197,94,0.1);
+  border-radius: 12px;
+}
+.func-info {
+  flex: 1;
+}
+.func-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: 3px;
+}
+.func-sub {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+.func-arrow {
+  font-size: 20px;
+  color: var(--color-text-secondary);
+}
+
+/* 文章默写 */
+.dict-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 6px;
+}
+.dict-title {
+  font-size: 14px;
+  color: #00953d;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.dict-en-sentence {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+.dict-zh-sentence {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.dict-input-area {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--bg-input);
+  color: var(--color-text);
+  border: 1px solid rgba(34,197,94,0.3);
+  outline: none;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.dict-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+}
+.dict-btn-light {
+  background: var(--bg-nav);
+  color: var(--color-text);
+}
+.dict-btn-primary {
+  background: #00953d;
+  color: #fff;
+}
+.dict-result {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 10px 12px;
+  border-radius: 8px;
+  display: none;
+}
+.dict-result.right {
+  display: block;
+  background: rgba(34,197,94,0.15);
+  color: #58f198;
+}
+.dict-result.wrong {
+  display: block;
+  background: rgba(67, 162, 79, 0.15);
+  color: #cfff60;
+}
+
+/* 单词考试模式 */
+.exam-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 20px 16px;
+  text-align: center;
+}
+.exam-question {
+  font-size: 22px;
+  font-weight: bold;
+  color: #00953d;
+  margin-bottom: 20px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.exam-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.exam-option {
+  background: var(--bg-nav);
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.exam-option:hover {
+  background: rgba(34,197,94,0.3);
+}
+.exam-option.correct {
+  background: rgba(34,197,94,0.7);
+  color: #fff;
+}
+.exam-option.wrong {
+  background: rgba(161, 255, 60, 0.5);
+  color: #fff;
+}
+.exam-btn {
+  background: #00953d;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.exam-info {
+  text-align: center;
+  color: var(--color-text-secondary);
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* NEWS 详情页单词高亮样式 */
+.news-word-cet4 {
+  color: #58f198;
+  text-decoration: underline dotted 1px #58f198;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.news-word-cet6 {
+  color: #00b560;
+  text-decoration: underline dotted 1px #00b560;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.news-word-vocabulary {
+  color: #a8e428;
+  text-decoration: underline dotted 1px #a8e428;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -875,7 +1125,7 @@
 
   <div class="search-box">
     <input id="mainSearchInput" class="search-input" type="text" 
-    placeholder="搜索单词/字幕/视频"
+    placeholder="WangYibo酷盖"
     autocomplete="off"
     onkeydown="if(event.key==='Enter') globalSearch()">
     <div class="search-result-pop" id="searchResultPop"></div>
@@ -981,73 +1231,185 @@
   </div>
 </div>
 
+<!-- ===================== 已清空内容的 加油站 页面 ===================== -->
+<!-- ===================== 已清空内容的 加油站 页面 ===================== -->
 <div id="oilPage" class="page">
   <div class="secondary-header">
-    <div class="secondary-title">加油站</div>
+    <div class="secondary-title"></div>
     <div class="header-back-btn" onclick="showPage('mainPage')">
       <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
   </div>
-  <div class="oil-tab">
-    <div class="oil-item" onclick="showPage('cet4Page')">四级单词</div>
-    <div class="oil-item" onclick="showPage('cet6Page')">六级单词</div>
-    <div class="oil-item" onclick="showPage('wordbookPage')">生词本</div>
-    <div class="oil-item" onclick="showPage('practicePage')">字幕收藏</div>
-  </div>
 
-  <div class="word-stat" id="wordCountInfo">
-    加载中...
-  </div>
+  <!-- 加油站学习模块 -->
+<!-- 顶部16:7居中Logo -->
+<div class="gas-top-logo" style="width:87%;margin:15px auto 0;aspect-ratio:16/8;border-radius:16px;overflow:hidden;">
+    <img src="gas_banner.png" alt="加油站LOGO" style="width:100%;height:100%;object-fit:cover;display:block;">
 </div>
 
+<div class="practice-title" style="padding:20px 16px 12px;font-size:17px;color:#22c55e;font-weight:600;">ibo练习专区</div>
+
+<!-- 2行2列满图按钮 -->
+<div class="practice-btn-box" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;">
+    <div class="practice-btn-item" style="position:relative;height:110px;border-radius:14px;overflow:hidden;border:1px solid rgba(34, 197, 94, 0.3);cursor:pointer;" onclick="showPage('cet4Page')">
+        <img class="practice-icon" src="icon_cet4.png" alt="CET4" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+    <div class="practice-btn-item" style="position:relative;height:110px;border-radius:14px;overflow:hidden;border:1px solid rgba(34, 197, 94, 0.3);cursor:pointer;" onclick="showPage('cet6Page')">
+        <img class="practice-icon" src="icon_cet6.png" alt="CET6" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+    <div class="practice-btn-item" style="position:relative;height:110px;border-radius:14px;overflow:hidden;border:1px solid rgba(34, 197, 94, 0.3);cursor:pointer;" onclick="showPage('articleWritePage')">
+        <img class="practice-icon" src="icon_article.png" alt="文章默写" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+    <div class="practice-btn-item" style="position:relative;height:110px;border-radius:14px;overflow:hidden;border:1px solid rgba(34, 197, 94, 0.3);cursor:pointer;" onclick="showPage('sentenceWritePage')">
+        <img class="practice-icon" src="icon_sentence.png" alt="句子默写" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+</div>
+
+</div>
+<!-- ===================== CET4 选择单词页（复刻图1） ===================== -->
 <div id="cet4Page" class="page">
   <div class="secondary-header">
-    <div class="secondary-title">四级单词</div>
+    <div class="secondary-title">四级词汇 CET4</div>
     <div class="header-back-btn" onclick="showPage('oilPage')">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg>
+    </div>
   </div>
 
-  <div class="search-box" style="padding:10px 16px;">
-    <input class="search-input" id="cet4Search" type="text" placeholder="搜索四级单词" oninput="filterCet4Words()">
+  <!-- 顶部标签：已学 / 未学 / 全部 -->
+  <div style="display:flex; gap:8px; margin:10px 16px; align-items:center;">
+    <div style="flex:1; display:flex; background:var(--bg-nav); border-radius:12px; padding:4px;">
+      <div class="cet4-tab-btn active" data-tab="learned" onclick="switchCet4Tab('learned')" style="flex:1; text-align:center; padding:8px; border-radius:10px; font-size:15px; transition:all 0.2s;">已学</div>
+      <div class="cet4-tab-btn" data-tab="todo" onclick="switchCet4Tab('todo')" style="flex:1; text-align:center; padding:8px; border-radius:10px; font-size:15px; transition:all 0.2s;">未学</div>
+      <div class="cet4-tab-btn" data-tab="all" onclick="switchCet4Tab('all')" style="flex:1; text-align:center; padding:8px; border-radius:10px; font-size:15px; transition:all 0.2s;">全部</div>
+    </div>
   </div>
 
-  <div class="section-title"></div>
-  <div id="cet4WordList"></div>
+  <!-- 统计信息 -->
+  <div style="display:flex; justify-content:space-between; padding:0 16px; margin-bottom:10px; color:var(--color-text-secondary); font-size:14px;">
+    <span id="cet4TotalCount">共0词</span>
+    <span style="display:flex; align-items:center; gap:4px;">
+      按时间排序
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--color-text-secondary)"><path d="M7 10l5 5 5-5H7z"/></svg>
+    </span>
+  </div>
+
+  <!-- 单词列表容器 -->
+  <div id="cet4WordList" style="padding:0 16px; padding-bottom:100px;"></div>
+
+  <!-- 底部固定栏 -->
+  <div style="position:fixed; bottom:0; left:0; right:0; background:var(--bg-tabbar); border-top:1px solid rgba(34,197,94,0.2); padding:12px 16px; padding-bottom: env(safe-area-inset-bottom); display:flex; justify-content:space-between; align-items:center;">
+    <!-- 全选本页（最左侧） -->
+    <button id="selectAllBtn" onclick="toggleSelectAllVisible()" style="background:var(--bg-nav); color:var(--color-text); border:none; padding:8px 12px; border-radius:20px; font-size:14px;">
+      全选本页
+    </button>
+
+    <!-- 已选数量 -->
+    <div style="display:flex; align-items:center; gap:6px;">
+      <span style="color:var(--color-text-secondary); font-size:15px;">已选</span>
+      <span id="cet4SelectedCount" style="background:#00953d; color:#fff; width:24px; height:24px; border-radius:50%; display:grid; place-items:center; font-size:13px;">0</span>
+    </div>
+
+    <!-- 开始练习 -->
+    <button id="cet4StartBtn" onclick="startCet4Exam()" style="background:var(--bg-nav); color:var(--color-text-secondary); border:none; padding:10px 24px; border-radius:20px; font-size:15px; cursor:not-allowed;">
+      开始练习
+    </button>
+</div>
 </div>
 
-<div id="cet6Page" class="page">
+<!-- ===================== CET4 答题页（复刻图2） ===================== -->
+<div id="cet4ExamPage" class="page">
   <div class="secondary-header">
-    <div class="secondary-title">六级单词</div>
-    <div class="header-back-btn" onclick="showPage('oilPage')">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
+    <div class="secondary-title">四级练习</div>
+    <div class="header-back-btn" onclick="stopCet4ExamAndBack()">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg>
+    </div>
   </div>
 
-  <div class="search-box" style="padding:10px 16px;">
-    <input class="search-input" id="cet6Search" type="text" placeholder="搜索六级单词" oninput="filterCet6Words()">
+  <!-- 题目进度/操作栏 -->
+  <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 16px;">
+    <div style="font-size:16px; color:var(--color-text-secondary);" id="cet4ExamProgress">1/10</div>
   </div>
 
-  <div class="section-title"></div>
-  <div id="cet6WordList"></div>
+  <!-- 单词主体（已优化：左上角+绿色+小字） -->
+  <div style="padding: 10px 20px;">
+    <div style="font-size: 24px; font-weight: bold; color: #00953d; margin-bottom: 8px; text-align: left;" id="cet4ExamWord">it</div>
+    <div style="display:flex; align-items:center; gap:10px; color:var(--color-text-secondary); font-size:13px; text-align: left;">
+      <span>美</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-text-secondary)"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8z"/></svg>
+      <span id="cet4ExamPhonetic">[ɪt]</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--color-text-secondary)"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+    </div>
+  </div>
+
+  <!-- 选项列表 -->
+  <div id="cet4ExamOptions" style="padding:0 16px; margin-top:150px; display:flex; flex-direction:column; gap:12px;"></div>
 </div>
 
-<div id="wordbookPage" class="page">
-  <div class="secondary-header">
-    <div class="secondary-title">生词本</div>
-    <div class="header-back-btn" onclick="showPage('oilPage')">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
-  </div>
-  <div style="text-align:center;padding:16px;color:var(--color-text);">我收藏的单词</div>
-  <div id="collectedList"></div>
-</div>
+<style>
+/* CET4 标签按钮样式 */
+.cet4-tab-btn.active {
+  background:var(--bg-card-light);
+  color:var(--color-text);
+  font-weight:600;
+}
+/* 单词列表日期分组 */
+.cet4-date-group {
+  margin-bottom:16px;
+}
+.cet4-date-title {
+  font-size:17px; font-weight:600; color:var(--color-text); margin-bottom:8px; padding-left:4px;
+}
+.cet4-word-item {
+  display:flex; align-items:center; padding:12px 0; border-bottom:1px solid rgba(34,197,94,0.1);
+}
+.cet4-word-checkbox {
+  width: 14px;          /* 改这里：圆宽度 */
+  height: 14px;         /* 改这里：圆高度 */
+  border-radius: 50%;
+  border: 1px solid var(--color-text-secondary);
+  margin-right: 12px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.cet4-word-checkbox.checked {
+  background: #00953d;
+  border-color: #00953d;
+}
 
-<div id="practicePage" class="page">
-  <div class="secondary-header">
-    <div class="secondary-title">字幕收藏</div>
-    <div class="header-back-btn" onclick="showPage('oilPage')">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6z"/></svg></div>
-  </div>
-  <div style="text-align:center;padding:16px;color:var(--color-text);">我收藏的字幕句子</div>
-  <div id="practiceList"></div>
+.cet4-word-name {
+  font-size:19px; color:var(--color-text);
+}
+/* 答题选项样式 */
+.cet4-exam-option {
+  background:var(--bg-nav); border-radius:12px; padding:16px; font-size:16px; color:var(--color-text); cursor:pointer; transition:all 0.2s;
+}
+.cet4-exam-option:hover {
+  background:rgba(34,197,94,0.2);
+}
+.cet4-exam-option.correct {
+  background:rgba(34,197,94,0.5); color:#fff;
+}
+/* 选错答案改为灰色 */
+.cet4-exam-option.wrong {
+  background:#a73e3e; color:#fff;
+}
+
+/* 答案：词性灰色 + 词义白色 */
+.cet4-exam-option {
+  display: flex;
+  gap: 8px;
+}
+.cet4-exam-option::first-line {
+  color: #fff !important;
+}
+.cet4-exam-option {
+  color: var(--color-text-secondary) !important;
+}
+</style>
+
+
 </div>
+<!-- ===================== 加油站 结束 ===================== -->
 
 <div id="iboPage" class="page">
   <div class="secondary-header">
@@ -1155,6 +1517,76 @@ let cet4Words = {}, cet6Words = {};
 
 let allSubtitlesCache = JSON.parse(localStorage.getItem('allSubtitlesCache') || '[]');
 
+// ================== 自定义音效系统（修复版） ==================
+let streakRight = 0;   // 连续答对
+let streakWrong = 0;   // 连续答错
+
+// 预加载所有音效
+const sounds = {
+  right: new Audio('right.mp3'),
+  right5: new Audio('right5.mp3'),
+  right10: new Audio('right10.mp3'),
+  wrong: new Audio('wrong.mp3'),
+  wrong5: new Audio('wrong5.mp3'),
+  wrong10: new Audio('wrong10.mp3')
+};
+
+// 播放正确音效（自动判断连续次数）
+function playRightSound() {
+  streakRight++;
+  streakWrong = 0; // 答错清零
+
+  // 20连对 → 10连对音效（你没有20音效，用10代替）
+  if (streakRight % 20 === 0) {
+    sounds.right10.currentTime = 0;
+    sounds.right10.play();
+  }
+  // 10连对
+  else if (streakRight % 10 === 0) {
+    sounds.right10.currentTime = 0;
+    sounds.right10.play();
+  }
+  // 5连对
+  else if (streakRight % 5 === 0) {
+    sounds.right5.currentTime = 0;
+    sounds.right5.play();
+  }
+  // 普通正确
+  else {
+    sounds.right.currentTime = 0;
+    sounds.right.play();
+  }
+}
+
+// 播放错误音效
+function playWrongSound() {
+  streakWrong++;
+  streakRight = 0; // 答对清零
+
+  if (streakWrong % 20 === 0) {
+    sounds.wrong10.currentTime = 0;
+    sounds.wrong10.play();
+  }
+  else if (streakWrong % 10 === 0) {
+    sounds.wrong10.currentTime = 0;
+    sounds.wrong10.play();
+  }
+  else if (streakWrong % 5 === 0) {
+    sounds.wrong5.currentTime = 0;
+    sounds.wrong5.play();
+  }
+  else {
+    sounds.wrong.currentTime = 0;
+    sounds.wrong.play();
+  }
+}
+
+// 重置连续计数（退出练习时）
+function resetStreak() {
+  streakRight = 0;
+  streakWrong = 0;
+}
+
 // 主题切换核心功能
 function initTheme() {
   const themeBtn = document.getElementById('themeToggle');
@@ -1175,6 +1607,12 @@ function initTheme() {
   };
 }
 
+
+// 答题正确调用
+// playRightSound()
+// 答题错误调用
+// playWrongSound()
+
 async function loadWordLibrary() {
   try {
     cet4Words = await fetch("cet4.json").then(r => r.json());
@@ -1187,106 +1625,9 @@ async function loadWordLibrary() {
     for (let w in vocabulary) allWords[w] = { ...vocabulary[w], type: "vocabulary" };
     wordLibrary = allWords;
 
-    renderCet4List();
-    renderCet6List();
-
-    document.getElementById("wordCountInfo").innerText =
-      `CET4 已收录 ${Object.keys(cet4Words).length} 个单词 | CET6 已收录 ${Object.keys(cet6Words).length} 个单词`;
-
     console.log("✅ 词库加载完成");
   } catch (err) {
     console.log("❌ 词库加载失败");
-  }
-}
-
-let sortedCet4 = [];
-function renderCet4List() {
-  const list = document.getElementById("cet4WordList");
-  sortedCet4 = Object.keys(cet4Words).sort((a, b) => a.localeCompare(b));
-  let html = "";
-  for (let w of sortedCet4) {
-    const d = cet4Words[w];
-    html += `
-    <div class="word-card" onclick="showWordInfo('${w}','${d.phonetic}','${d.meaning}','${d.pos}')">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span style="font-weight:bold;color:#00953d;">${w}</span>
-        <span style="color:#90ee90;">${d.phonetic || ''}</span>
-        <span style="background:rgba(34,197,94,0.2);padding:2px 6px;border-radius:10px;font-size:12px;">${d.pos || ''}</span>
-        <span style="color:var(--color-text-eee);flex:1;margin-left:4px;">${d.meaning || ''}</span>
-      </div>
-    </div>`;
-  }
-  list.innerHTML = html;
-}
-function filterCet4Words() {
-  const keyword = document.getElementById("cet4Search").value.toLowerCase().trim();
-  const list = document.getElementById("cet4WordList");
-  let html = "";
-  for (let w of sortedCet4) {
-    if (w.toLowerCase().includes(keyword) || cet4Words[w].meaning.includes(keyword)) {
-      const d = cet4Words[w];
-      html += `
-      <div class="word-card" onclick="showWordInfo('${w}','${d.phonetic}','${d.meaning}','${d.pos}')">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <span style="font-weight:bold;color:#00953d;">${w}</span>
-          <span style="color:##90ee90;">${d.phonetic || ''}</span>
-          <span style="background:rgba(34,197,94,0.2);padding:2px 6px;border-radius:10px;font-size:12px;">${d.pos || ''}</span>
-          <span style="color:var(--color-text-eee);flex:1;margin-left:4px;">${d.meaning || ''}</span>
-        </div>
-      </div>`;
-    }
-  }
-  list.innerHTML = html;
-}
-
-let sortedCet6 = [];
-function renderCet6List() {
-  const list = document.getElementById("cet6WordList");
-  sortedCet6 = Object.keys(cet6Words).sort((a, b) => a.localeCompare(b));
-  let html = "";
-  for (let w of sortedCet6) {
-    const d = cet6Words[w];
-    html += `
-    <div class="word-card word-card-cet6" onclick="showWordInfo('${w}','${d.phonetic}','${d.meaning}','${d.pos}')">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span style="font-weight:bold;color:#00953d;">${w}</span>
-        <span style="color:#90ee90;">${d.phonetic || ''}</span>
-        <span style="background:rgba(34,197,94,0.2);padding:2px 6px;border-radius:10px;font-size:12px;">${d.pos || ''}</span>
-        <span style="color:var(--color-text-eee);flex:1;margin-left:4px;">${d.meaning || ''}</span>
-      </div>
-    </div>`;
-  }
-  list.innerHTML = html;
-}
-function filterCet6Words() {
-  const keyword = document.getElementById("cet6Search").value.toLowerCase().trim();
-  const list = document.getElementById("cet6WordList");
-  let html = "";
-  for (let w of sortedCet6) {
-    if (w.toLowerCase().includes(keyword) || cet6Words[w].meaning.includes(keyword)) {
-      const d = cet6Words[w];
-      html += `
-      <div class="word-card word-card-cet6" onclick="showWordInfo('${w}','${d.phonetic}','${d.meaning}','${d.pos}')">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <span style="font-weight:bold;color:#00953d;">${w}</span>
-          <span style="color:#90ee90;">${d.phonetic || ''}</span>
-          <span style="background:rgba(34,197,94,0.2);padding:2px 6px;border-radius:10px;font-size:12px;">${d.pos || ''}</span>
-          <span style="color:var(--color-text-eee);flex:1;margin-left:4px;">${d.meaning || ''}</span>
-        </div>
-      </div>`;
-    }
-  }
-  list.innerHTML = html;
-}
-
-function toggleSubtitleShow() {
-  subVisible = !subVisible;
-  if (subVisible) {
-    subtitleContainer.classList.remove('hide-sub');
-    subtitleSwitchBtn.innerText = "隐藏字幕";
-  } else {
-    subtitleContainer.classList.add('hide-sub');
-    subtitleSwitchBtn.innerText = "显示字幕";
   }
 }
 
@@ -1315,14 +1656,12 @@ function collectWord(word) {
       pos: info.pos || ''
     });
     setCollectedWords(list);
-    renderWordBook();
   }
 }
 function removeCollectedWord(word) {
   let list = getCollectedWords();
   list = list.filter(item => item.word !== word);
   setCollectedWords(list);
-  renderWordBook();
 }
 function collectSentence(text) {
   const list = getPracticeSentences();
@@ -1330,76 +1669,12 @@ function collectSentence(text) {
   if (!exists) {
     list.push({ text: text });
     setPracticeSentences(list);
-    renderPractice();
   }
 }
 function removeSentence(text) {
   let list = getPracticeSentences();
   list = list.filter(item => item.text !== text);
   setPracticeSentences(list);
-  renderPractice();
-}
-
-function renderWordBook() {
-  const list = getCollectedWords();
-  const el = document.getElementById('collectedList');
-  el.innerHTML = list.map(item => {
-    const word = item.word;
-    const matched = allSubtitlesCache.filter(sub =>
-      new RegExp(`\\b${word}\\b`, 'i').test(sub.en)
-    );
-    const senHtml = matched.length
-      ? `<div class="wb-sentences">
-           <div class="wb-sentences-title"></div>
-           ${matched.map((sub, i) => `
-             <div class="wb-sentence-item" onclick="openVideo('${sub.videoSrc}',${sub.time})">
-                 ${sub.en}｜${sub.zh}
-             </div>
-           `).join('')}
-         </div>`
-      : '<div class="wb-sentences">暂无匹配句子</div>';
-    return `
-    <div class="word-book-item">
-      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-        <span style="font-weight:bold;color:#00953d;">${item.word}</span>
-        <span style="color:#90ee90;">${item.phonetic || ''}</span>
-        <span style="background:rgba(34,197,94,0.2);padding:2px 6px;border-radius:10px;font-size:12px;">${item.pos || ''}</span>
-        <span style="color:var(--color-text);flex:1;">${item.meaning || ''}</span>
-        <button class="unfav-btn" onclick="removeCollectedWord('${item.word}')" style="margin:0;">取消</button>
-      </div>
-      ${senHtml}
-    </div>`;
-  }).join('');
-}
-function renderPractice() {
-  const list = getPracticeSentences();
-  const el = document.getElementById('practiceList');
-  
-  const reversedList = list.slice().reverse();
-  
-  el.innerHTML = reversedList.map((item, idx) => {
-    const [en, zh] = item.text.split('｜');
-    return `
-    <div class="practice-item" style="position:relative; padding-right:40px; line-height:1.7;">
-      <!-- 英文行 -->
-      <div style="color:#00953d; font-weight:500; font-size:15px;">
-        ${en || ''}
-      </div>
-      <!-- 中文行 单独一行 白色字体 -->
-      <div style="color:#ffffff; font-size:14px; margin-top:6px;">
-        ${zh || ''}
-      </div>
-      
-      <!-- 取消按钮换成空心五角星 替代X -->
-      <div onclick="removeSentence(\`${item.text}\`)" 
-           style="position:absolute; right:10px; top:12px;
-                  font-size:20px; color:#999;
-                  cursor:pointer;">
-        ☆
-      </div>
-    </div>
-  `;
-  }).join('');
 }
 
 function parseVttTime(str){
@@ -1487,8 +1762,6 @@ function renderGTVideos() {
 window.onload = async function () {
   initTheme();
   await loadWordLibrary();
-  renderWordBook();
-  renderPractice();
 
   video.addEventListener("timeupdate", syncSubtitles);
   video.addEventListener("play", () => {
@@ -1504,20 +1777,28 @@ window.onload = async function () {
   renderVoiceList();
   renderDramaVideos();
   renderGTVideos();
-
-  // ====== 加这一行 ======
   renderBbcNews();
 
   document.addEventListener('touchstart', function(e) {
+    // NEWS 详情页单词点击弹窗
+if (e.target.classList.contains("news-word-cet4") || 
+    e.target.classList.contains("news-word-cet6") || 
+    e.target.classList.contains("news-word-vocabulary")) {
+  const word = e.target.dataset.word;
+  const info = wordLibrary[word];
+  if (info) {
+    showWordInfo(word, info.phonetic, info.meaning, info.pos);
+  }
+  return;
+}
+    
     let timer = setTimeout(() => {
       e.target.dispatchEvent(new Event('longpress'));
     }, 600);
     e.target.addEventListener('touchend', () => clearTimeout(timer), { once: true });
   });
 
-  // ========== 新增：加载本地保存的头像、昵称、签名 ==========
   loadUserProfile();
-  // 绑定昵称、签名输入框自动保存
   bindProfileInputSave();
 };
 
@@ -1602,7 +1883,6 @@ function jumpToSubtitle(index) {
   }
 }
 function openVideo(src, time = 0) {
-  // 记录进入视频前所在页面
   lastPageBeforeVideo = document.querySelector('.page.active').id;
 
   showPage('videoPage');
@@ -1610,7 +1890,6 @@ function openVideo(src, time = 0) {
   video.currentTime = time;
   video.play().catch(() => { });
 
-  // 先加载字幕，加载完成后自动跳转到对应句子
   loadSubtitle(src).then(() => {
     if (time > 0 && subtitles.length > 0) {
       jumpToTimeSubtitle(time);
@@ -1631,12 +1910,9 @@ document.addEventListener("click", e => {
     const info = wordLibrary[word];
     if (!info) return;
         wordPopup.style.display = "block";
-    // 关键：挂靠在当前单词元素后面
     e.target.appendChild(wordPopup);
-    // 重置位置，紧贴单词正下方
     wordPopup.style.left = "0px";
     wordPopup.style.top = "8px";
-    // 防止超出屏幕右侧自动靠左
     setTimeout(() => {
       const popRect = wordPopup.getBoundingClientRect();
       if(popRect.right > window.innerWidth){
@@ -1681,7 +1957,6 @@ function stopVideoAndBack() {
   video.pause();
   video.currentTime = 0;
   document.getElementById('videoBox').classList.remove('playing');
-  // 退回进入视频前的原页面
   showPage(lastPageBeforeVideo);
 }
 function showPage(id) {
@@ -1691,12 +1966,16 @@ function showPage(id) {
   setTimeout(() => {
     document.getElementById(id).classList.add('active');
   }, 50);
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  if (id === 'mainPage') document.querySelectorAll('.tab')[0].classList.add('active');
-  if (id.includes('oil') || id.includes('cet') || id.includes('word') || id.includes('practice')) document.querySelectorAll('.tab')[1].classList.add('active');
-  if (id === 'iboPage') document.querySelectorAll('.tab')[2].classList.add('active');
 
-    // 控制主题按钮只在首页显示
+  const tabbar = document.getElementById('mainTabbar');
+  const showTabPages = ['mainPage', 'oilPage', 'iboPage'];
+  tabbar.style.display = showTabPages.includes(id) ? 'flex' : 'none';
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  if (id === 'mainPage') document.getElementById('tab-home').classList.add('active');
+  if (id.startsWith('oil') || id.includes('word') || id.includes('practice')) document.getElementById('tab-oil').classList.add('active');
+  if (id === 'iboPage') document.getElementById('tab-ibo').classList.add('active');
+
   const themeBtn = document.getElementById('themeToggle');
   themeBtn.style.display = id === 'mainPage' ? 'block' : 'none';
 }
@@ -1791,7 +2070,6 @@ function playThisVoice(el) {
   const gif = item.querySelector('.voice-wave-gif');
   const time = item.querySelector('.voice-time');
 
-  // 如果当前正在播放 → 再次点击暂停
   if (!audio.paused) {
     audio.pause();
     gif.style.display = 'none';
@@ -1799,7 +2077,6 @@ function playThisVoice(el) {
     return;
   }
 
-  // 先暂停其他所有语音
   document.querySelectorAll('.voice-src').forEach(a => {
     a.pause();
     a.currentTime = 0;
@@ -1807,12 +2084,10 @@ function playThisVoice(el) {
   document.querySelectorAll('.voice-wave-gif').forEach(g => g.style.display = 'none');
   document.querySelectorAll('.voice-time').forEach(t => t.style.display = 'block');
 
-  // 播放当前
   audio.play().catch(err => console.log('播放异常:', err));
   gif.style.display = 'inline-block';
   time.style.display = 'none';
 
-  // 播放结束自动复原
   audio.onended = function () {
     gif.style.display = 'none';
     time.style.display = 'block';
@@ -1868,8 +2143,7 @@ function deleteVoice(el, file) {
 const adminToggleBtn = document.getElementById('adminToggleBtn');
 const adminVoiceForm = document.getElementById('adminVoiceForm');
 let adminMode = false;
-// 只搜索四六级单词 纯净版 不破坏布局
-// 全局聚合搜索：单词 + 字幕 + 视频
+
 function globalSearch() {
   const kw = document.getElementById('mainSearchInput').value.trim().toLowerCase();
   const pop = document.getElementById('searchResultPop');
@@ -1883,7 +2157,6 @@ function globalSearch() {
   let resultHtml = '';
   let hasResult = false;
 
-  // 1. 搜四六级单词
   let cet4Match = [];
   for (let w in cet4Words) {
     if (w.toLowerCase().includes(kw) || cet4Words[w].meaning.toLowerCase().includes(kw)) {
@@ -1912,7 +2185,6 @@ function globalSearch() {
     });
   }
 
-  // 2. 搜所有字幕句子
   const subCache = JSON.parse(localStorage.getItem('allSubtitlesCache') || '[]');
   const subMatch = subCache.filter(item => 
     item.en.toLowerCase().includes(kw) || item.zh.includes(kw)
@@ -1926,7 +2198,6 @@ function globalSearch() {
     });
   }
 
-  // 3. 搜视频标题
   const dramaVideos = JSON.parse(localStorage.getItem('dramaVideos') || '[]');
   const gtVideos = JSON.parse(localStorage.getItem('gtVideos') || '[]');
   const allVideos = [...dramaVideos, ...gtVideos];
@@ -1947,13 +2218,11 @@ function globalSearch() {
   pop.style.display = 'block';
 }
 
-// 点击搜索结果跳转逻辑
 document.addEventListener('click', function(e){
   const popItem = e.target.closest('.search-result-item');
   const popBox = document.getElementById('searchResultPop');
   const input = document.getElementById('mainSearchInput');
 
-  // 点击结果项
   if(popItem){
     const type = popItem.dataset.type;
     const val = popItem.dataset.val;
@@ -1979,30 +2248,24 @@ document.addEventListener('click', function(e){
     return;
   }
 
-  // 点击空白关闭弹窗
   if(!popBox.contains(e.target) && e.target !== input){
     popBox.style.display = 'none';
   }
 });
 
-// 只滚动 + 加边框高亮，不改动原有HTML，绝不乱码
 function scrollToSearchWord() {
   const target = window.searchTargetWord;
   if (!target) return;
 
-  // 遍历所有单词卡片，匹配单词文本
   const cards = document.querySelectorAll('.word-card');
   cards.forEach(card => {
-    // 清除之前高亮样式
     card.style.border = '';
     card.style.boxShadow = '';
 
     const wordText = card.querySelector('span[style*="color:#00953d"]')?.innerText || '';
     if (wordText.toLowerCase() === target.toLowerCase()) {
-      // 高亮边框+阴影 不破坏布局
       card.style.border = '2px solid #00723c';
       card.style.boxShadow = '0 0 10px rgba(34,197,94,0.4)';
-      // 滚动到屏幕中间
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
@@ -2028,12 +2291,9 @@ adminToggleBtn.onclick = function(){
   document.querySelectorAll('.voice-del, .video-del-btn').forEach(btn=>{
     btn.style.display=adminMode?'grid':'none';
   });
-  
-  // ====== 加这一行 ======
   syncBbcAdminDisplay();
 };
 
-// 保存探索心境视频名称
 function saveDramaVideoName(inputEl, videoSrc) {
   let newTitle = inputEl.value.trim();
   let list = JSON.parse(localStorage.getItem('dramaVideos') || '[]');
@@ -2046,7 +2306,6 @@ function saveDramaVideoName(inputEl, videoSrc) {
   localStorage.setItem('dramaVideos', JSON.stringify(list));
 }
 
-// 保存China GT视频名称
 function saveGTVideoName(inputEl, videoSrc) {
   let newTitle = inputEl.value.trim();
   let list = JSON.parse(localStorage.getItem('gtVideos') || '[]');
@@ -2059,62 +2318,50 @@ function saveGTVideoName(inputEl, videoSrc) {
   localStorage.setItem('gtVideos', JSON.stringify(list));
 }
 
-// 加载用户资料：头像base64、昵称、个性签名
 function loadUserProfile() {
-  // 头像
   const saveAvatar = localStorage.getItem('iboAvatar');
   if (saveAvatar) {
     document.getElementById('avatarPreview').src = saveAvatar;
   }
-  // 昵称
   const saveName = localStorage.getItem('iboName');
   if (saveName) {
     document.getElementById('iboName').value = saveName;
   }
-  // 个性签名
   const saveSign = localStorage.getItem('iboSign');
   if (saveSign) {
     document.getElementById('iboSign').value = saveSign;
   }
 }
 
-// 昵称、个性签名 输入时自动保存
 function bindProfileInputSave() {
   const nameInput = document.getElementById('iboName');
   const signInput = document.getElementById('iboSign');
 
-  // 昵称失去焦点自动存
   nameInput.addEventListener('blur', function(){
     localStorage.setItem('iboName', this.value.trim());
   });
 
-  // 个性签名失去焦点自动存
   signInput.addEventListener('blur', function(){
     localStorage.setItem('iboSign', this.value.trim());
   });
 }
 
-// 头像上传并保存base64到本地
 document.getElementById('avatarInput').addEventListener('change', e => {
   const f = e.target.files[0];
   if (!f) return;
   const r = new FileReader();
   r.onload = function (e) {
     const base64Img = e.target.result;
-    // 预览赋值
     document.getElementById('avatarPreview').src = base64Img;
-    // 永久存入本地
     localStorage.setItem('iboAvatar', base64Img);
   };
   r.readAsDataURL(f);
 });
 
-// =============== Yibo News 模块（带音频播放器） ===============
 let currentNewsList = [];
 let bbcAudio = document.getElementById('bbcAudioPlayer');
 let bbcSpeed = 1.0;
 
-// 渲染一级列表页
 function renderBbcNews() {
   const list = JSON.parse(localStorage.getItem('bbcNewsList') || '[]');
   currentNewsList = list;
@@ -2143,7 +2390,6 @@ function renderBbcNews() {
   container.innerHTML = html;
 }
 
-// 添加新文章（新增音频地址）
 function addBbcNews() {
   const name = document.getElementById('bbcArticleName').value.trim();
   const time = document.getElementById('bbcUpdateTime').value.trim();
@@ -2162,7 +2408,6 @@ function addBbcNews() {
   localStorage.setItem('bbcNewsList', JSON.stringify(list));
   renderBbcNews();
   
-  // 清空表单
   document.getElementById('bbcArticleName').value = '';
   document.getElementById('bbcUpdateTime').value = '';
   document.getElementById('bbcImageName').value = '';
@@ -2171,7 +2416,6 @@ function addBbcNews() {
   document.getElementById('bbcContent').value = '';
 }
 
-// 删除文章
 function deleteBbcNews(index) {
   if (!confirm('确定删除这条 NEWS？')) return;
   const list = JSON.parse(localStorage.getItem('bbcNewsList') || '[]');
@@ -2180,26 +2424,60 @@ function deleteBbcNews(index) {
   renderBbcNews();
 }
 
-// 打开三级详情页
 function openBbcDetail(index) {
   const item = currentNewsList[index];
   
-  // 1. 加载Banner图
   const bannerImg = document.getElementById('bbcDetailBanner');
   bannerImg.src = '';
   bannerImg.src = item.banner;
   bannerImg.onerror = function() { this.src = 'news_1.jpg'; };
   
-  // 2. 加载文章内容
   document.getElementById('bbcDetailTitle').innerText = item.name;
   document.getElementById('bbcDetailTime').innerText = item.time;
-  document.getElementById('bbcDetailContent').innerText = item.content;
+  // 修复 NEWS 文章单词点击弹窗
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains("news-word-cet4") || 
+        e.target.classList.contains("news-word-cet6") || 
+        e.target.classList.contains("news-word-vocabulary")) {
+      const word = e.target.dataset.word;
+      const info = wordLibrary[word];
+      if (info) {
+        showWordInfo(word, info.phonetic, info.meaning, info.pos);
+      }
+    }
+  });
+
+  // 核心：给文章内容自动匹配单词高亮
+  const contentEl = document.getElementById('bbcDetailContent');
+  let contentText = item.content;
+  contentEl.innerText = contentText; // 先设置纯文本
+  let html = contentEl.innerHTML;
+
+  // 匹配四级单词
+  Object.keys(cet4Words).forEach(word => {
+    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+    html = html.replace(regex, `<span class="news-word-cet4" data-word="${word.toLowerCase()}">$&</span>`);
+  });
+  // 匹配六级单词
+  Object.keys(cet6Words).forEach(word => {
+    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+    html = html.replace(regex, `<span class="news-word-cet6" data-word="${word.toLowerCase()}">$&</span>`);
+  });
+  // 匹配雅思/扩展词汇
+  Object.keys(wordLibrary).forEach(word => {
+    const info = wordLibrary[word];
+    if (info.type === 'vocabulary') {
+      const regex = new RegExp(`\\b${word}\\b`, 'gi');
+      html = html.replace(regex, `<span class="news-word-vocabulary" data-word="${word.toLowerCase()}">$&</span>`);
+    }
+  });
+
+  contentEl.innerHTML = html; // 渲染高亮后的内容
   
-  // 3. 加载音频
+  // 音频设置
   bbcAudio.src = item.audio;
   bbcAudio.load();
   
-  // 重置播放器状态
   document.getElementById('bbcPlayBtn').innerText = '▶';
   document.getElementById('bbcAudioProgress').value = 0;
   document.getElementById('bbcAudioCurrent').innerText = '00:00';
@@ -2208,7 +2486,6 @@ function openBbcDetail(index) {
   showPage('bbcDetailPage');
 }
 
-// 音频播放/暂停控制
 function toggleBbcAudio() {
   if (bbcAudio.paused) {
     bbcAudio.play().catch(() => alert('音频加载失败，请检查文件地址'));
@@ -2219,7 +2496,6 @@ function toggleBbcAudio() {
   }
 }
 
-// 倍速切换
 function toggleBbcSpeed() {
   const speeds = [1.0, 1.25, 1.5, 0.75];
   const idx = speeds.indexOf(bbcSpeed);
@@ -2228,19 +2504,16 @@ function toggleBbcSpeed() {
   document.getElementById('bbcSpeedBtn').innerText = bbcSpeed + 'x';
 }
 
-// 快进/快退
 function bbcSkip(seconds) {
   bbcAudio.currentTime += seconds;
 }
 
-// 格式化时间
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60);
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-// 音频进度条同步
 bbcAudio.addEventListener('loadedmetadata', () => {
   document.getElementById('bbcAudioDuration').innerText = formatTime(bbcAudio.duration);
 });
@@ -2255,13 +2528,11 @@ bbcAudio.addEventListener('ended', () => {
   document.getElementById('bbcAudioProgress').value = 0;
 });
 
-// 进度条拖拽控制
 document.getElementById('bbcAudioProgress').addEventListener('input', function() {
   const time = (this.value / 100) * bbcAudio.duration;
   bbcAudio.currentTime = time;
 });
 
-// 返回时停止音频
 function stopBbcAudioAndBack() {
   bbcAudio.pause();
   bbcAudio.currentTime = 0;
@@ -2269,7 +2540,6 @@ function stopBbcAudioAndBack() {
   showPage('bbcPage');
 }
 
-// 管理模式同步
 function syncBbcAdminDisplay() {
   const bbcForm = document.getElementById('bbcNewsForm');
   const bbcDels = document.querySelectorAll('.bbc-del-btn');
@@ -2282,6 +2552,290 @@ function syncBbcAdminDisplay() {
   }
 }
 
+// ================== CET4 单词选择+答题逻辑 ==================
+let currentCet4Tab = "learned";
+let selectedCet4Words = [];
+let currentExamIndex = 0;
+let examWordList = [];
+
+// 切换标签
+function switchCet4Tab(tab) {
+  currentCet4Tab = tab;
+  document.querySelectorAll(".cet4-tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector(`.cet4-tab-btn[data-tab="${tab}"]`).classList.add("active");
+  renderCet4WordList();
+}
+
+// 全选/取消全选 当前页面可见单词
+let isAllSelected = false;
+function toggleSelectAllVisible() {
+  const btn = document.getElementById('selectAllBtn');
+  const visibleItems = document.querySelectorAll('.cet4-date-group .cet4-word-item');
+  const visibleWords = [];
+
+  // 收集当前页面所有可见单词
+  visibleItems.forEach(item => {
+    const word = item.querySelector('.cet4-word-name').innerText;
+    visibleWords.push(word);
+  });
+
+  if (!isAllSelected) {
+    // 全选
+    visibleWords.forEach(word => {
+      if (!selectedCet4Words.includes(word)) {
+        selectedCet4Words.push(word);
+      }
+    });
+    btn.innerText = '取消全选';
+    isAllSelected = true;
+  } else {
+    // 取消全选（只取消本页，不影响其他页）
+    selectedCet4Words = selectedCet4Words.filter(w => !visibleWords.includes(w));
+    btn.innerText = '全选本页';
+    isAllSelected = false;
+  }
+
+  // 重新渲染选中状态
+  renderCet4WordList();
+  updateSelectedCount();
+}
+
+// 渲染四级单词列表（按日期分组）
+async function renderCet4WordList() {
+  const container = document.getElementById("cet4WordList");
+  const collected = getCollectedWords().map(item => item.word.toLowerCase());
+  
+  let wordList = Object.entries(cet4Words).map(([word, info]) => ({
+    word,
+    ...info,
+    collected: collected.includes(word.toLowerCase()),
+    date: info.date || "5月16日（今日）"
+  }));
+
+  if (currentCet4Tab === "learned") {
+    wordList = wordList.filter(w => w.collected);
+  } else if (currentCet4Tab === "todo") {
+    wordList = wordList.filter(w => !w.collected);
+  }
+
+  document.getElementById("cet4TotalCount").innerText = `共${wordList.length}词`;
+
+  const grouped = {};
+  wordList.forEach(item => {
+    if (!grouped[item.date]) grouped[item.date] = [];
+    grouped[item.date].push(item);
+  });
+
+  let html = "";
+  for (let date in grouped) {
+    html += `<div class="cet4-date-group">
+      <div class="cet4-date-title">${date}</div>`;
+    grouped[date].forEach(item => {
+      const isSelected = selectedCet4Words.includes(item.word);
+      html += `
+      <div class="cet4-word-item" onclick="toggleWordSelect('${item.word}', this)">
+        <div class="cet4-word-checkbox ${isSelected ? 'checked' : ''}"></div>
+        <div class="cet4-word-name" onclick="speakWord('${item.word}')">${item.word}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// 切换单词选中状态
+function toggleWordSelect(word, el) {
+  const checkbox = el.querySelector(".cet4-word-checkbox");
+  if (checkbox.classList.contains("checked")) {
+    checkbox.classList.remove("checked");
+    selectedCet4Words = selectedCet4Words.filter(w => w !== word);
+  } else {
+    checkbox.classList.add("checked");
+    selectedCet4Words.push(word);
+  }
+  updateSelectedCount();
+}
+
+// 更新已选数量和开始按钮状态
+function updateSelectedCount() {
+  document.getElementById("cet4SelectedCount").innerText = selectedCet4Words.length;
+  const btn = document.getElementById("cet4StartBtn");
+  if (selectedCet4Words.length > 0) {
+    btn.style.background = "#00953d";
+    btn.style.color = "#fff";
+    btn.style.cursor = "pointer";
+  } else {
+    btn.style.background = "var(--bg-nav)";
+    btn.style.color = "var(--color-text-secondary)";
+    btn.style.cursor = "not-allowed";
+  }
+}
+
+// 开始答题
+function startCet4Exam() {
+  if (selectedCet4Words.length === 0) return;
+  examWordList = [...selectedCet4Words];
+  currentExamIndex = 0;
+  showPage("cet4ExamPage");
+  renderCet4ExamQuestion();
+  autoSpeakExamWord();
+}
+
+// 渲染当前答题题目
+// 渲染当前答题题目
+function renderCet4ExamQuestion() {
+  const word = examWordList[currentExamIndex];
+  const info = cet4Words[word];
+  if (!info) return;
+
+  document.getElementById("cet4ExamProgress").innerText = `${currentExamIndex + 1}/${examWordList.length}`;
+  document.getElementById("cet4ExamWord").innerText = word;
+  document.getElementById("cet4ExamPhonetic").innerText = info.phonetic || "";
+
+  const correctAnswer = `${info.pos || 'pron.'} ${info.meaning}`;
+  const wrongAnswers = [];
+  const allMeanings = Object.values(cet4Words).filter(i => i.meaning !== info.meaning);
+  
+  while (wrongAnswers.length < 3 && allMeanings.length > 0) {
+    const randomIdx = Math.floor(Math.random() * allMeanings.length);
+    const wrong = allMeanings.splice(randomIdx, 1)[0];
+    wrongAnswers.push(`${wrong.pos || 'n.'} ${wrong.meaning}`);
+  }
+  
+  const options = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+
+  let html = "";
+  options.forEach(option => {
+    html += `
+    <div class="cet4-exam-option" onclick="selectExamOption(this, '${correctAnswer}')">${option}</div>`;
+  });
+  document.getElementById("cet4ExamOptions").innerHTML = html;
+
+  // 自动发音
+  autoSpeakExamWord();
+}
+
+// 选择选项 + 弹出对错图片
+function selectExamOption(el, correctAnswer) {
+  // 禁用所有选项点击
+  document.querySelectorAll(".cet4-exam-option").forEach(opt => opt.style.pointerEvents = "none");
+  
+  // 关键修复：判断当前选项是否正确
+  const userAnswer = el.innerText.trim();
+  const isCorrect = (userAnswer === correctAnswer.trim());
+
+  // 当前答对的单词
+  const currentWord = examWordList[currentExamIndex];
+
+  // 标记正确/错误
+  if (isCorrect) {
+    el.classList.add("correct");
+    playRightSound(); // ✅ 正确音效
+
+    // ============== 核心：答对 → 加入已学单词库 ==============
+    collectWord(currentWord);
+
+  } else {
+    el.classList.add("wrong");
+    playWrongSound(); // ❌ 错误音效
+    // 高亮正确答案
+    document.querySelectorAll(".cet4-exam-option").forEach(opt => {
+      if (opt.innerText.trim() === correctAnswer.trim()) {
+        opt.classList.add("correct");
+      }
+    });
+  }
+
+  // 弹出对错图片
+  const popup = document.getElementById("answerPopup");
+  const popupIcon = document.getElementById("popupIcon");
+
+  if (isCorrect) {
+    popupIcon.src = "right.png";   // 答对
+  } else {
+    popupIcon.src = "wrong.png";   // 答错
+  }
+
+  popup.style.visibility = "visible";
+
+  // 1秒后消失 + 下一题
+  setTimeout(() => {
+    popup.style.visibility = "hidden";
+
+    currentExamIndex++;
+    if (currentExamIndex >= examWordList.length) {
+      alert("练习完成！");
+      stopCet4ExamAndBack();
+    } else {
+      renderCet4ExamQuestion();
+    }
+  }, 1000);
+}
+
+// 退出答题
+function stopCet4ExamAndBack() {
+  selectedCet4Words = [];
+  currentExamIndex = 0;
+  examWordList = [];
+  showPage("cet4Page");
+  
+  // 自动刷新单词列表（关键）
+  renderCet4WordList();
+  
+  updateSelectedCount();
+  resetStreak(); // ✅ 重置连续计数
+}
+
+// 进入页面自动刷新列表
+document.getElementById("cet4Page").addEventListener("click", () => {
+  renderCet4WordList();
+  updateSelectedCount();
+});
+
+// 进入页面自动刷新
+document.getElementById("cet4Page").addEventListener("click", () => {
+  renderCet4WordList();
+});
+
+// ================== CET4 单词发音功能 ==================
+function speakWord(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel(); // 先停掉之前的发音
+    let utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';        // 美式发音
+    utterance.rate = 0.9;           // 语速
+    utterance.volume = 1;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+// 答题页自动读单词
+function autoSpeakExamWord() {
+  const word = document.getElementById("cet4ExamWord").innerText;
+  setTimeout(() => {
+    speakWord(word);
+  }, 300);
+}
 </script>
+
+<!-- 底部 Tab 栏（全局，由 JS 控制显隐） -->
+<div class="tabbar" id="mainTabbar">
+  <div class="tab" id="tab-home" onclick="showPage('mainPage')">
+    <div>首页</div>
+  </div>
+  <div class="tab" id="tab-oil" onclick="showPage('oilPage')">
+    <div>加油站</div>
+  </div>
+  <div class="tab" id="tab-ibo" onclick="showPage('iboPage')">
+    <div>我的</div>
+  </div>
+</div>
+
+<!-- 答题对错弹窗图片 -->
+<div id="answerPopup" style="position:fixed; left:40; right:0; top: 55%; display:flex; align-items:center; justify-content:center; z-index:9999; pointer-events:none; visibility:hidden;">
+  <img id="popupIcon" style="width:220px; height:220px;">
+</div>
+
 </body>
 </html>
